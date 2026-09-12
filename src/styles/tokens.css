@@ -1,0 +1,61 @@
+/* ─────────────────────────────────────────────────────────────
+   Direction 01 — Bone & Navy
+   Every colour sampled from the DZI monogram and the character
+   illustration. Change these six values and the whole site follows.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* surfaces */
+  --bg:        #efede6;
+  --bg-deep:   #e8e5dc;
+  --surface:   #e3e0d6;
+  --surface-2: #d8d4c8;
+
+  /* text */
+  --ink:       #16181f;
+  --ink-muted: #6a6d78;
+  --ink-faint: #9a9ca4;
+
+  /* brand */
+  --accent:    #252f4c; /* navy, from the tee */
+  --accent-2:  #545441; /* olive, from the shorts */
+  --cream:     #f3d1bb; /* warm highlight, from the skin tones */
+
+  /* lines */
+  --hairline:  #d2cec1;
+  --rule:      #16181f;
+
+  /* gradients — applied through CSS masks, never as image assets */
+  --grad-brand: linear-gradient(142deg, #2b3860 0%, #252f4c 38%, #4a4a3a 72%, #5d5d45 100%);
+  --grad-gold:  linear-gradient(142deg, #fdf3c8 0%, #e8c15a 26%, #b8860b 52%, #f4dd93 74%, #d9a72e 100%);
+  --black:      #08090b;
+
+  /* type */
+  --font-display: "Big Shoulders Display", "Big Shoulders", "Arial Narrow", "Haettenschweiler", sans-serif;
+  --font-body: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  /* type scale — 1.25 minor third, fluid between 380px and 1440px */
+  --step--1: clamp(0.78rem, 0.76rem + 0.10vw, 0.84rem);
+  --step-0:  clamp(0.94rem, 0.90rem + 0.18vw, 1.06rem);
+  --step-1:  clamp(1.18rem, 1.10rem + 0.34vw, 1.42rem);
+  --step-2:  clamp(1.47rem, 1.33rem + 0.60vw, 1.90rem);
+  --step-3:  clamp(1.84rem, 1.60rem + 1.02vw, 2.53rem);
+  --step-4:  clamp(2.30rem, 1.91rem + 1.66vw, 3.38rem);
+
+  /* rhythm */
+  --gutter: clamp(20px, 4vw, 56px);
+  --measure: 62ch;
+  --header-h: 56px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  color-scheme: light;
+}
+
+/* The site commits to one visual world by design — there is no dark variant.
+   Every colour is still declared explicitly so the page never borrows a host
+   background. If a dark mode is wanted later, it is a second block here and
+   nothing else changes. */
