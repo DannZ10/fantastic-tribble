@@ -855,13 +855,15 @@
 
 .case-detail__shots {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 14px;
   padding-bottom: clamp(40px, 6vw, 80px);
 }
 .case-detail__shots img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  /* Desktop screenshots, so a landscape frame. A 4:5 crop threw away most of
+     a browser window. */
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   background: var(--surface-2);
 }
