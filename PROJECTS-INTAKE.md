@@ -64,8 +64,13 @@ Aturannya:
 - Ekstensi bebas: `.png`, `.jpg`, `.webp`. Video `.mp4` atau `.mov`.
 - Huruf kecil semua, pemisah tanda hubung, tanpa spasi.
 
-**Taruh semua file di folder `public/raw/`.** Konversi, kompresi, dan penempatan
-ke path akhir saya yang kerjakan — jangan diubah ukurannya sendiri.
+**Taruh semua file di folder `raw/`** (di root repo, bukan di dalam `public/`).
+Konversi, kompresi, dan penempatan ke path akhir saya yang kerjakan lewat
+`python scripts/process_raw.py` — jangan diubah ukurannya sendiri.
+
+Folder `raw/` sengaja di luar `public/` karena apa pun di dalam `public/` ikut
+ter-deploy apa adanya. File mentahnya ~16MB dan tidak perlu ikut ke produksi.
+Folder ini juga di-gitignore, jadi file aslinya tetap di komputer Anda saja.
 
 ---
 
@@ -76,10 +81,18 @@ bar dan ekstensi. Ambil area konten saja, tanpa taskbar. Kalau halamannya
 panjang, screenshot bagian yang paling menjelaskan produknya, bukan hanya bagian
 paling atas.
 
+**Screen recording desktop tidak dipakai.** Tidak ada komponen di situs ini yang
+memutar rekaman desktop, jadi file `-desktop-rec.mp4` diabaikan. Tidak usah
+direkam lagi.
+
 **Screen recording mobile.** Rekam di HP asli, resolusi asli (1170×2532 iPhone
 atau 1080×2340 Android), 6–10 detik. **Gerakkan pelan dan stabil** — kecepatan
 putar dikendalikan oleh scroll pengunjung, jadi rekaman yang tersentak akan
 terlihat patah-patah. Bersihkan dulu: tanpa notifikasi, baterai penuh, jam rapi.
+
+Kalau rekamannya dimulai sebelum halaman selesai render, tidak masalah —
+`process_raw.py` mendeteksi sendiri bagian yang masih blank di awal dan hanya
+mengambil rentang yang benar-benar ada isinya.
 
 **Logo project.** Kalau tidak punya, kosongkan saja — saya buatkan monogram dari
 inisial nama project.
@@ -122,25 +135,47 @@ HASILNYA            :
 
 ---
 
-## 5. Daftar project saat ini
+## 5. Daftar project
 
-Semua isi di bawah masih **placeholder karangan** dan harus diganti. Nomor `pNN`
-dipakai untuk penamaan file.
+Nomor `pNN` dipakai untuk penamaan file. Kolom **Media** menandai dokumentasi
+yang sudah masuk dan sudah terpasang di situs.
 
-| # | Slug sekarang | Judul placeholder | Beranda |
-|---|---|---|---|
-| p01 | `realtime-order-dashboard` | Realtime order dashboard | ya |
-| p02 | `field-survey-offline` | Offline-first field survey | ya |
-| p03 | `component-library` | Design system and component library | ya |
-| p04 | `invoice-automation` | Invoice automation service | tidak |
-| p05 | `booking-platform` | Multi-tenant booking platform | tidak |
-| p06 | `analytics-pipeline` | Event analytics pipeline | tidak |
-| p07 | `design-tokens-cli` | Design token CLI | tidak |
-| p08 | `inventory-sync` | Inventory sync bridge | tidak |
-| p09 | `docs-search` | Documentation search | tidak |
+| # | Project | URL | Media | Beranda |
+|---|---|---|---|---|
+| p01 | SDGs Universitas Brawijaya | internal, perlu VPN | — | |
+| p02 | Brawijaya Multi Usaha | brawijayamultiusaha.co.id | ✅ | ya |
+| p03 | Brawijaya Core | brawijayacore.com | ✅ | ya |
+| p04 | Smart Test by Brawijaya Core | test.brawijayacore.com | ✅ | ya |
+| p05 | Brawijaya Catering | menyusul | — | |
+| p06 | Brawijaya Tour and Travel | brawijayatourandtravel.com | — | |
+| p07 | Depo Agro | depoagro.id | — | |
+| p08 | Feedback BMU | feedback.brawijayamultiusaha.co.id | — | |
+| p09 | Due Diligence Form BMU | legal.brawijayamultiusaha.co.id | — | |
+| p10 | CoE CBSA | stg-coecbsa.vercel.app (staging) | — | |
+| p11 | Kembara.id | stg-kembara.vercel.app (staging) | — | |
+| p12 | Saku Mini Wallet | stg-saku.vercel.app (staging) | — | |
+| p13 | DibiEdu LMS | dibiedu-lms.vercel.app | — | |
 
-Slug boleh diganti sesuai project asli. Kalau diganti, URL detailnya ikut berubah
-menjadi `dannzone.site/case/<slug-baru>`.
+Yang tampil di beranda ditentukan oleh field `featured` di `cases.ts`, bukan
+urutan. Sekarang p02–p04 karena hanya itu yang medianya sudah ada.
+
+### Teks masih kosong untuk SEMUA project
+
+Nama, nomor dan URL sudah asli. Tapi deskripsi, peran, waktu, stack, dan empat
+bagian cerita (masalah / yang dibangun / bagian tersulit / hasil) semuanya masih
+bertanda `TODO — belum diisi`.
+
+Itu disengaja. Ini project klien sungguhan, jadi menuliskan cerita karangan yang
+terdengar masuk akal tentang Brawijaya Multi Usaha atau Depo Agro jauh lebih
+berbahaya daripada meninggalkan kolom kosong yang jelas terlihat kosong. Tidak
+ada satu kalimat pun yang saya karang.
+
+### Kredensial demo tidak saya simpan
+
+Login demo untuk p12 yang Anda kirim **tidak** saya masukkan ke dalam kode.
+Repository ini publik — apa pun yang di-commit ikut terpublikasi. Kalau login
+demo itu memang boleh dilihat umum, beri tahu saya dan akan saya tampilkan di
+halaman detailnya; kalau tidak, biarkan seperti sekarang.
 
 ---
 

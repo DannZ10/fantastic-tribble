@@ -8,3 +8,15 @@ Thumbs.db
 .env.*
 !.env.example
 .vercel
+
+# Source material for the site's assets, not the assets themselves.
+# scripts/process_raw.py turns these into what public/ actually serves, so the
+# originals stay on disk and out of the repository — they are large, they are
+# regenerable from the live sites, and public/ would otherwise ship them.
+raw/
+!raw/README.md
+
+# Scratch output from scripts/capture_portfolio.mjs
+temp_test_vid/
+**/temp_rec_desktop/
+**/temp_rec_mobile/
