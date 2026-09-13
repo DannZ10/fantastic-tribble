@@ -16,7 +16,7 @@ import subprocess
 import sys
 import tempfile
 
-from PIL import Image
+from PIL import Image, ImageStat
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "raw")
@@ -33,6 +33,17 @@ def out(*parts):
 
 def save(img, path, quality=82):
     img.save(path, "WEBP", quality=quality, method=6)
+
+
+def flat(src, min_stddev=15.0):
+    """True when a still is near-uniform, i.e. nothing rendered.
+
+    A capture can land on a loading state the same way a recording opens on
+    one: p04-preview.png came back as a flat dark screen (stddev 10.0) while
+    the real page measures 88. Standard deviation separates them cleanly —
+    a rendered page has text and edges, a loading screen has neither.
+    """
+    return ImageStat.Stat(Image.open(src).convert("L")).stddev[0] < min_stddev
 
 
 def desktop(src, dest):
@@ -137,13 +148,30 @@ def main():
         n = pid[1:]
         print(f"\n{pid}")
 
+        shots = [
+            os.path.join(RAW, f)
+            for f in sorted(files)
+            if f.startswith(f"{pid}-desktop-") and f.endswith(".png")
+        ]
+        shots = [f for f in shots if not flat(f)]
+
         prev = os.path.join(RAW, f"{pid}-preview.png")
-        if os.path.exists(prev):
+        if os.path.exists(prev) and flat(prev):
+            # The dedicated preview capture never rendered; the first usable
+            # detail shot is a better hover panel than a blank screen.
+            prev = shots[0] if shots else None
+            print("  preview       flat capture, using", os.path.basename(prev) if prev else "nothing")
+        if prev:
             print("  preview      ", desktop(prev, out("projects", f"preview-{n}.webp")))
 
-        shots = sorted(f for f in files if f.startswith(f"{pid}-desktop-") and f.endswith(".png"))
         for i, f in enumerate(shots, 1):
-            print(f"  shot-{i:02d}      ", desktop(os.path.join(RAW, f), out("projects", f"shot-{n}-{i:02d}.webp")))
+            print(f"  shot-{i:02d}      ", desktop(f, out("projects", f"shot-{n}-{i:02d}.webp")))
+
+        # Drop shots left over from an earlier run with more captures, or the
+        # count in cases.ts will point at a stale duplicate of the last one.
+        for stale in sorted(glob.glob(os.path.join(PUB, "projects", f"shot-{n}-*.webp")))[len(shots):]:
+            os.remove(stale)
+            print("  removed      ", os.path.basename(stale))
 
         rec = os.path.join(RAW, f"{pid}-mobile-rec.mp4")
         if os.path.exists(rec):

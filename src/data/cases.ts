@@ -127,7 +127,7 @@ export const cases: Case[] = [
     built: TODO,
     hardPart: TODO,
     outcome: TODO,
-    ...media('04', 3),
+    ...media('04'),
   },
   {
     slug: 'brawijaya-catering',
