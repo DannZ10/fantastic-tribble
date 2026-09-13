@@ -11,7 +11,7 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
     },
     {
-      "source": "/(work|characters|brand)/(.*)",
+      "source": "/(work|characters|brand|projects|arc)/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
     }
   ]

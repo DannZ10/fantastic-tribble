@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://dannzone.site/</loc></url>
+  <url><loc>https://dannzone.site/work</loc></url>
   <url><loc>https://dannzone.site/about</loc></url>
-  <url><loc>https://dannzone.site/case/realtime-order-dashboard</loc></url>
-  <url><loc>https://dannzone.site/case/field-survey-offline</loc></url>
-  <url><loc>https://dannzone.site/case/component-library</loc></url>
+  <url><loc>https://dannzone.site/case/sdgs-universitas-brawijaya</loc></url>
+  <url><loc>https://dannzone.site/case/brawijaya-multi-usaha</loc></url>
+  <url><loc>https://dannzone.site/case/brawijaya-core</loc></url>
+  <url><loc>https://dannzone.site/case/smart-test-brawijaya-core</loc></url>
+  <url><loc>https://dannzone.site/case/brawijaya-catering</loc></url>
+  <url><loc>https://dannzone.site/case/brawijaya-tour-and-travel</loc></url>
+  <url><loc>https://dannzone.site/case/depo-agro</loc></url>
+  <url><loc>https://dannzone.site/case/feedback-bmu</loc></url>
+  <url><loc>https://dannzone.site/case/due-diligence-form-bmu</loc></url>
+  <url><loc>https://dannzone.site/case/coe-cbsa</loc></url>
+  <url><loc>https://dannzone.site/case/kembara-id</loc></url>
+  <url><loc>https://dannzone.site/case/saku-mini-wallet</loc></url>
+  <url><loc>https://dannzone.site/case/dibiedu-lms</loc></url>
 </urlset>
