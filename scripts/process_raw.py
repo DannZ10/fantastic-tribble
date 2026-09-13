@@ -10,7 +10,9 @@ Safe to re-run: it only writes projects it finds raw files for, and leaves
 every other project's existing assets alone.
 """
 import glob
+import io
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -23,6 +25,24 @@ RAW = os.path.join(ROOT, "raw")
 PUB = os.path.join(ROOT, "public")
 
 FRAME_COUNT = 48
+CASES = os.path.join(ROOT, "src", "data", "cases.ts")
+
+
+def featured_numbers():
+    """The project numbers whose frame sequence is actually requested.
+
+    PhoneScrub only renders inside CaseStack, and CaseStack only renders
+    `featured`. Frames for every other project are ~1.4MB each of build
+    output that nothing ever fetches, so they are not written at all.
+    Change `featured` in cases.ts and re-run this script to regenerate.
+    """
+    src = io.open(CASES, encoding="utf-8").read()
+    nums = set()
+    for chunk in src.split("slug:")[1:]:
+        m = re.search(r"number: '(\d+)'", chunk)
+        if m and "featured: true" in chunk.split("...media")[0]:
+            nums.add(m.group(1))
+    return nums
 
 
 def out(*parts):
@@ -138,10 +158,22 @@ def main():
     if not os.path.isdir(RAW):
         sys.exit(f"no raw/ directory at {RAW}")
 
-    files = os.listdir(RAW)
-    ids = sorted({f[:3] for f in files if f.startswith("p") and f[1:3].isdigit()})
+    # capture_portfolio.mjs writes into raw/<project-name>/ while files
+    # uploaded by hand land flat in raw/. Index both by basename so either
+    # layout works and neither needs copying.
+    files = {}
+    for root, dirs, names in os.walk(RAW):
+        dirs[:] = [d for d in dirs if not d.startswith("temp_rec_")]
+        for name in names:
+            if name.startswith("p") and name[1:3].isdigit():
+                files.setdefault(name, os.path.join(root, name))
+
+    ids = sorted({f[:3] for f in files})
     if not ids:
         sys.exit("no pNN-* files found in raw/")
+
+    wanted = featured_numbers()
+    print("featured, so frames are built for:", ", ".join(sorted(wanted)) or "nothing")
 
     arc_pool = []
     for pid in ids:
@@ -149,14 +181,14 @@ def main():
         print(f"\n{pid}")
 
         shots = [
-            os.path.join(RAW, f)
+            files[f]
             for f in sorted(files)
             if f.startswith(f"{pid}-desktop-") and f.endswith(".png")
         ]
         shots = [f for f in shots if not flat(f)]
 
-        prev = os.path.join(RAW, f"{pid}-preview.png")
-        if os.path.exists(prev) and flat(prev):
+        prev = files.get(f"{pid}-preview.png")
+        if prev and flat(prev):
             # The dedicated preview capture never rendered; the first usable
             # detail shot is a better hover panel than a blank screen.
             prev = shots[0] if shots else None
@@ -173,13 +205,18 @@ def main():
             os.remove(stale)
             print("  removed      ", os.path.basename(stale))
 
-        rec = os.path.join(RAW, f"{pid}-mobile-rec.mp4")
-        if os.path.exists(rec):
+        rec = files.get(f"{pid}-mobile-rec.mp4")
+        if rec and n in wanted:
             fc, a, b = frames_from_video(rec, out("frames", f"case{n}"))
             print(f"  frames        {fc} frames from the {a}s-{b}s window")
 
         for f in sorted(x for x in files if x.startswith(f"{pid}-mobile-") and x.endswith(".png")):
-            arc_pool.append(os.path.join(RAW, f))
+            arc_pool.append(files[f])
+
+    for d in sorted(glob.glob(os.path.join(PUB, "frames", "case*"))):
+        if os.path.basename(d)[4:] not in wanted:
+            shutil.rmtree(d)
+            print(f"removed {os.path.basename(d)}: not featured, nothing loads it")
 
     # Real phone screens beat the generated placeholders in the hero arc.
     # Ten slots; whatever is missing keeps the placeholder already in place.

@@ -146,7 +146,7 @@ yang sudah masuk dan sudah terpasang di situs.
 | p02 | Brawijaya Multi Usaha | brawijayamultiusaha.co.id | ✅ | ya |
 | p03 | Brawijaya Core | brawijayacore.com | ✅ | ya |
 | p04 | Smart Test by Brawijaya Core | test.brawijayacore.com | ✅ | ya |
-| p05 | Brawijaya Catering | menyusul | — | |
+| p05 | Brawijaya Catering | localhost, belum deploy | — | |
 | p06 | Brawijaya Tour and Travel | brawijayatourandtravel.com | — | |
 | p07 | Depo Agro | depoagro.id | — | |
 | p08 | Feedback BMU | feedback.brawijayamultiusaha.co.id | — | |
@@ -157,7 +157,13 @@ yang sudah masuk dan sudah terpasang di situs.
 | p13 | DibiEdu LMS | dibiedu-lms.vercel.app | — | |
 
 Yang tampil di beranda ditentukan oleh field `featured` di `cases.ts`, bukan
-urutan. Sekarang p02–p04 karena hanya itu yang medianya sudah ada.
+urutan. Sekarang p02–p04.
+
+Frame sequence untuk animasi scroll di HP **hanya dibuat untuk project yang
+`featured`**, karena hanya beranda yang memutarnya — project lain akan
+menambah ~1,4MB per project ke hasil build tanpa pernah dibuka siapa pun.
+Kalau Anda mengganti project mana yang tampil di beranda, jalankan lagi
+`python scripts/process_raw.py` supaya frame-nya ikut berpindah.
 
 ### Teks masih kosong untuk SEMUA project
 
@@ -170,12 +176,19 @@ terdengar masuk akal tentang Brawijaya Multi Usaha atau Depo Agro jauh lebih
 berbahaya daripada meninggalkan kolom kosong yang jelas terlihat kosong. Tidak
 ada satu kalimat pun yang saya karang.
 
-### Kredensial demo tidak saya simpan
+### Kredensial demo tidak disimpan — sudah diputuskan
 
-Login demo untuk p12 yang Anda kirim **tidak** saya masukkan ke dalam kode.
-Repository ini publik — apa pun yang di-commit ikut terpublikasi. Kalau login
-demo itu memang boleh dilihat umum, beri tahu saya dan akan saya tampilkan di
-halaman detailnya; kalau tidak, biarkan seperti sekarang.
+Login demo untuk p12 (Saku Mini Wallet) **tidak** dimasukkan ke dalam kode dan
+**tidak akan** ditampilkan di halaman detailnya. Anda sudah memutuskan ini pada
+13 September 2026. Repository ini publik, jadi apa pun yang di-commit ikut
+terpublikasi.
+
+Untuk dokumentasi, hanya halaman publik yang di-capture. Kalau suatu saat
+dibutuhkan tangkapan layar area yang butuh login, saya akan minta Anda membuka
+akses itu lebih dulu — bukan meminta kata sandinya.
+
+Berlaku sama untuk p13 (DibiEdu LMS): halaman dashboard butuh registrasi, jadi
+yang di-capture hanya halaman publiknya.
 
 ---
 

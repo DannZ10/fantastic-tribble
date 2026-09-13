@@ -266,7 +266,7 @@ export const cases: Case[] = [
     built: TODO,
     hardPart: TODO,
     outcome: TODO,
-    ...media('12'),
+    ...media('12', 3),
   },
   {
     slug: 'dibiedu-lms',
@@ -283,7 +283,7 @@ export const cases: Case[] = [
     built: TODO,
     hardPart: TODO,
     outcome: TODO,
-    ...media('13'),
+    ...media('13', 4),
   },
 ]
 
