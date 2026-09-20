@@ -39,7 +39,7 @@ def featured_numbers():
     src = io.open(CASES, encoding="utf-8").read()
     nums = set()
     for chunk in src.split("slug:")[1:]:
-        m = re.search(r"number: '(\d+)'", chunk)
+        m = re.search(r'number:\s*[\'"](\d+)[\'"]', chunk)
         if m and "featured: true" in chunk.split("...media")[0]:
             nums.add(m.group(1))
     return nums

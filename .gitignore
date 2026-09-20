@@ -20,3 +20,9 @@ raw/
 temp_test_vid/
 **/temp_rec_desktop/
 **/temp_rec_mobile/
+
+# Personal deck — not part of the site
+public/slide/
+
+# graphify analysis output
+graphify-out/

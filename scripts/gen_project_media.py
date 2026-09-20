@@ -134,11 +134,11 @@ def preview(n: int) -> Image.Image:
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
-    for n in range(1, 14):
+    for n in range(1, 15):
         logo(n).save(os.path.join(OUT, f"logo-{n:02d}.webp"), quality=92, method=6)
         preview(n).save(os.path.join(OUT, f"preview-{n:02d}.webp"), quality=80, method=6)
     # two detail-page placeholders each, so a project with no uploads yet
         # still renders a complete-looking detail page
         for k in (1, 2):
             preview(n + k * 3).save(os.path.join(OUT, f"shot-{n:02d}-{k:02d}.webp"), quality=80, method=6)
-    print("wrote 13 logos + 13 previews + 26 detail shots -> public/projects/")
+    print("wrote 14 logos + 14 previews + 28 detail shots -> public/projects/")

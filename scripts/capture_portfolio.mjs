@@ -13,82 +13,26 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const RAW_DIR = path.join(ROOT_DIR, 'raw');
 
 const PROJECTS = [
-  {
-    id: 'p02',
-    name: 'p02-brawijaya-multi-usaha',
-    title: 'Brawijaya Multi Usaha (BMU)',
-    url: 'https://brawijayamultiusaha.co.id/',
-  },
-  {
-    id: 'p03',
-    name: 'p03-brawijaya-core',
-    title: 'Brawijaya Core',
-    url: 'https://www.brawijayacore.com/',
-  },
-  {
-    id: 'p04',
-    name: 'p04-smart-test',
-    title: 'Smart Test By Brawijaya Core',
-    url: 'https://test.brawijayacore.com/',
-    subUrls: [
-      { name: 'login', url: 'https://test.brawijayacore.com/login' }
-    ],
-  },
-  {
-    id: 'p06',
-    name: 'p06-brawijaya-tour-and-travel',
-    title: 'Brawijaya Tour and Travel',
-    url: 'https://www.brawijayatourandtravel.com/',
-  },
-  {
-    id: 'p07',
-    name: 'p07-depo-agro',
-    title: 'Depo Agro',
-    url: 'https://www.depoagro.id/',
-  },
-  {
-    id: 'p08',
-    name: 'p08-feedback-bmu',
-    title: 'Feedback BMU',
-    url: 'https://feedback.brawijayamultiusaha.co.id/',
-  },
-  {
-    id: 'p09',
-    name: 'p09-due-diligence-bmu',
-    title: 'Due Diligence Form BMU',
-    url: 'https://legal.brawijayamultiusaha.co.id/',
-  },
-  {
-    id: 'p10',
-    name: 'p10-coe-cbsa',
-    title: 'CoE CBSA',
-    url: 'https://stg-coecbsa.vercel.app/',
-  },
-  {
-    id: 'p11',
-    name: 'p11-kembara',
-    title: 'Kembara.id',
-    url: 'https://stg-kembara.vercel.app/',
-  },
-  {
-    id: 'p12',
-    name: 'p12-saku-mini-wallet',
-    title: 'Saku Mini Wallet by Kembara.id',
-    url: 'https://stg-saku.vercel.app/',
-    subUrls: [
-      { name: 'login', url: 'https://stg-saku.vercel.app/login' }
-    ],
-  },
-  {
-    id: 'p13',
-    name: 'p13-dibiedu-lms',
-    title: 'DibiEdu LMS',
-    url: 'https://dibiedu-lms.vercel.app/',
+  // p01 SDGs UB is internal (VPN) — not captured here.
+  { id: 'p02', name: 'p02-brawijaya-multi-usaha', title: 'Brawijaya Multi Usaha', url: 'https://brawijayamultiusaha.co.id/' },
+  { id: 'p03', name: 'p03-brawijaya-core', title: 'Brawijaya Core', url: 'https://www.brawijayacore.com/' },
+  { id: 'p04', name: 'p04-smart-test', title: 'Smart Test by Brawijaya Core', url: 'https://test.brawijayacore.com/',
+    subUrls: [{ name: 'login', url: 'https://test.brawijayacore.com/login' }] },
+  { id: 'p05', name: 'p05-brawijaya-catering', title: 'Brawijaya Catering', url: 'https://stg-brawijayacatering.vercel.app/' },
+  { id: 'p06', name: 'p06-brawijaya-tour-and-travel', title: 'Brawijaya Tour and Travel', url: 'https://www.brawijayatourandtravel.com/' },
+  { id: 'p07', name: 'p07-depo-agro', title: 'Depo Agro', url: 'https://www.depoagro.id/' },
+  { id: 'p08', name: 'p08-assets-bmu', title: 'Assets BMU', url: 'https://stg-assetsbmu.vercel.app/' },
+  { id: 'p09', name: 'p09-feedback-bmu', title: 'Feedback BMU', url: 'https://feedback.brawijayamultiusaha.co.id/' },
+  { id: 'p10', name: 'p10-due-diligence-bmu', title: 'Due Diligence Form BMU', url: 'https://legal.brawijayamultiusaha.co.id/' },
+  { id: 'p11', name: 'p11-coe-cbsa', title: 'CoE CBSA', url: 'https://stg-coecbsa.vercel.app/' },
+  { id: 'p12', name: 'p12-kembara', title: 'Kembara.id', url: 'https://stg-kembara.vercel.app/' },
+  { id: 'p13', name: 'p13-saku-mini-wallet', title: 'Saku Mini Wallet by Kembara.id', url: 'https://stg-saku.vercel.app/',
+    subUrls: [{ name: 'login', url: 'https://stg-saku.vercel.app/login' }] },
+  { id: 'p14', name: 'p14-dibiedu-lms', title: 'DibiEdu LMS', url: 'https://dibiedu-lms.vercel.app/',
     subUrls: [
       { name: 'courses', url: 'https://dibiedu-lms.vercel.app/courses' },
-      { name: 'login', url: 'https://dibiedu-lms.vercel.app/login' }
-    ],
-  },
+      { name: 'login', url: 'https://dibiedu-lms.vercel.app/login' },
+    ] },
 ];
 
 // Helper to convert webm to mp4 via ffmpeg
