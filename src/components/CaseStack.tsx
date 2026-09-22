@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { featured } from '../data/cases'
-import { PhoneScrub } from './PhoneScrub'
 import { subscribeScrollProgress } from '../hooks/useScrollProgress'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
@@ -110,7 +109,15 @@ export function CaseStack() {
           </div>
 
           <div className="case-card__media">
-            <PhoneScrub dir={c.frames.dir} count={c.frames.count} label={`${c.title} interface`} />
+            {c.selected && (
+              <img
+                className="case-card__shot"
+                src={c.selected}
+                alt={`${c.title} interface`}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
           </div>
         </article>
       ))}

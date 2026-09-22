@@ -2,21 +2,24 @@ import { useEffect, useRef } from 'react'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 /* ─────────────────────────────────────────────────────────────
-   The curved phone marquee behind the hero subject.
+   The curved marquee of desktop mockups behind the hero subject.
 
-   Ten phones travel left to right on a loop. Position along the
-   track drives scale, vertical offset, rotation and stacking, so
-   the strip reads as an arc receding through the middle of the
-   screen: smallest and faintest at centre, largest at the edges.
+   Fourteen 16:9 screens travel left to right on a loop. Position
+   along the track drives scale, vertical offset, rotation and
+   stacking, so the strip reads as an arc receding through the
+   middle of the screen: smallest and faintest at centre, largest
+   at the edges.
 
    Everything is written straight to the DOM inside one rAF loop —
    sixty state updates a second would leave no frame budget for the
    rest of the hero.
    ───────────────────────────────────────────────────────────── */
 
-// Drawn at the bezel's own 9:19.5, so nothing is cropped away.
-// Swap these files for real app screenshots — same paths, no code change.
-const PHONES = Array.from({ length: 10 }, (_, i) => `/arc/${i + 1}.webp`)
+// One 16:9 desktop mockup per project. Swap the files, keep the paths.
+const PHONES = Array.from(
+  { length: 14 },
+  (_, i) => `/projects/mockup-${String(i + 1).padStart(2, '0')}.webp`,
+)
 
 const BASE_SPEED = 74 // px per second
 const HOVER_SPEED = 0.18 // multiplier while a phone is hovered

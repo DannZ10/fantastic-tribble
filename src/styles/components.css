@@ -194,15 +194,15 @@
   position: absolute;
   top: 50%;
   left: 0;
-  width: clamp(108px, 12vw, 178px);
-  margin-top: -26vh;
+  width: clamp(230px, 26vw, 400px);
+  margin-top: -12vh;
   transform-origin: center center;
   will-change: transform, opacity;
 }
 .arc__bezel {
-  aspect-ratio: 9 / 19.5;
-  padding: 5px;
-  border-radius: 20px;
+  aspect-ratio: 16 / 9;
+  padding: 4px;
+  border-radius: 12px;
   background: #d9d6cc;
   box-shadow: 0 0 0 1px rgba(22, 24, 31, 0.16), 0 18px 34px -20px rgba(22, 24, 31, 0.4);
   overflow: clip;
@@ -217,7 +217,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 8px;
   display: block;
 }
 
@@ -329,7 +329,7 @@
   /* Targets the image, not the wrapper — the height lives on the image so a
      percentage never has to resolve against a content-sized grid row. */
   .hero__subject img { height: min(54vh, 430px); }
-  .arc__phone { width: clamp(84px, 22vw, 130px); margin-top: -22vh; }
+  .arc__phone { width: clamp(150px, 42vw, 240px); margin-top: -9vh; }
   .hero__role-caption {
     font-size: 9.5px;
     bottom: clamp(40px, 7vh, 70px);
@@ -723,34 +723,15 @@
   .case-card__media { display: none; }
 }
 
-/* ─── phone scrub ──────────────────────────────────────────────── */
-.phone { width: min(100%, 264px); }
-.phone__bezel {
-  position: relative;
-  aspect-ratio: 9 / 19.5;
-  padding: 9px;
-  border-radius: 34px;
-  background: #17181c;
-  box-shadow: 0 0 0 1.5px #34363d, 0 26px 50px -22px rgba(22, 24, 31, 0.55);
-}
-.phone__notch {
-  position: absolute;
-  top: 15px; left: 50%;
-  transform: translateX(-50%);
-  width: 32%; height: 15px;
-  border-radius: 99px;
-  background: #17181c;
-  z-index: 2;
-}
-.phone__screen {
-  width: 100%; height: 100%;
-  border-radius: 26px;
-  background: var(--surface-2);
+/* ─── selected mockup (home stack) ─────────────────────────────── */
+.case-card__shot {
+  width: min(100%, 560px);
+  aspect-ratio: 16 / 10;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 420ms var(--ease-out);
+  border-radius: 14px;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px rgba(22, 24, 31, 0.1), 0 30px 56px -28px rgba(22, 24, 31, 0.5);
 }
-.phone.is-ready .phone__screen { opacity: 1; }
 
 /* ─── about ────────────────────────────────────────────────────
    Mark left, prose right, in one grid row — so the mark's height is
