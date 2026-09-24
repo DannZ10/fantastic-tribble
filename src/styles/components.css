@@ -552,8 +552,8 @@
   top: 0;
   left: 0;
   z-index: 60;
-  width: clamp(260px, 27vw, 430px);
-  aspect-ratio: 1200 / 780;
+  width: clamp(280px, 30vw, 470px);
+  aspect-ratio: 16 / 9;
   pointer-events: none;
   opacity: 0;
   scale: 0.94;
@@ -667,20 +667,27 @@
   width: calc(100% - var(--gutter) * 2);
   min-height: min(72vh, 620px);
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-  gap: clamp(20px, 3.6vw, 56px);
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 4vw, 64px);
   align-items: center;
-  padding: clamp(26px, 3.4vw, 52px);
-  /* Sits on the page ground rather than on a panel of its own — the
-     hairline alone separates it. */
-  background: var(--bg);
-  border: 1px solid var(--hairline);
+  padding: clamp(20px, 2.6vw, 44px);
+  /* Frosted glass, not the old solid panel: translucent + blur so the
+     page shows through, yet opaque enough to cover the card sliding up
+     beneath it (a fully transparent card leaves both cards' text
+     overlapping mid-transition). This is the glassmorphism read. */
+  background: rgba(239, 237, 230, 0.58);
+  background: color-mix(in srgb, var(--bg) 58%, transparent);
+  backdrop-filter: blur(16px) saturate(1.08);
+  -webkit-backdrop-filter: blur(16px) saturate(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 22px;
+  box-shadow: 0 30px 70px -42px rgba(22, 24, 31, 0.42);
   will-change: transform, opacity;
 }
 .case-card:last-of-type { margin-bottom: 0; }
 
 .case-card__no { color: var(--case-ink, var(--accent)); margin-bottom: 16px; }
-.case-card__title { font-size: clamp(2.2rem, 5.2vw, 4.1rem); margin-bottom: 18px; }
+.case-card__title { font-size: clamp(1.9rem, 4.2vw, 3.3rem); margin-bottom: 16px; }
 .case-card__blurb {
   font-weight: 300;
   font-size: var(--step-1);
@@ -724,13 +731,19 @@
 }
 
 /* ─── selected mockup (home stack) ─────────────────────────────── */
+/* The card has no panel of its own, so the mockup floats: a soft layered
+   shadow reads as depth, and a hairline light edge gives a glassy lift. */
 .case-card__shot {
-  width: min(100%, 560px);
+  width: min(100%, 720px);
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 14px;
+  border-radius: 18px;
   background: var(--surface-2);
-  box-shadow: 0 0 0 1px rgba(22, 24, 31, 0.1), 0 30px 56px -28px rgba(22, 24, 31, 0.5);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 0 0 1px rgba(22, 24, 31, 0.08),
+    0 12px 28px -12px rgba(22, 24, 31, 0.32),
+    0 48px 90px -36px rgba(22, 24, 31, 0.55);
 }
 
 /* ─── about ────────────────────────────────────────────────────
