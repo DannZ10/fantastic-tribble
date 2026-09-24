@@ -36,11 +36,11 @@ export type Case = {
   logo: string
   /** Desktop screenshot that follows the cursor on hover. */
   preview: string
-  /** Static 16:10 mockup on the home stack (featured only). */
-  selected?: string
+  /** Home-stack screen recording (featured only). */
+  video?: string
 }
 
-const media = (n: string, shots = 2) => ({
+const media = (n: string, shots = 4) => ({
   preview: `/projects/preview-${n}.webp`,
   shots: Array.from(
     { length: shots },
@@ -58,8 +58,7 @@ export const cases: Case[] = [
     role: "UI/UX Designer",
     timeline: "2026 · 4 months",
     stack: ["Figma", "Shadcn"],
-    // Internal, reachable only over VPN.
-    liveUrl: undefined,
+    liveUrl: 'https://silaras.sdgs.ub.ac.id/',
     featured: true,
     ink: "#252f4c",
     problem: "The university gathers SDG progress from many units, but the data was scattered and hard to read in one view that served both leadership and operators.",
@@ -67,7 +66,7 @@ export const cases: Case[] = [
     hardPart: "Serving one screen to two very different users — the people entering data and the people reading it — without leaving either short of context.",
     outcome: "The team has one visual reference for SDG progress; a person's role decides what they can see and change.",
     logo: "/projects/logo-sdgs.webp",
-    selected: "/projects/selected-01.webp",
+    video: "/projects/rec-01.mp4",
     ...media("01"),
   },
   {
@@ -79,7 +78,7 @@ export const cases: Case[] = [
     role: "UI/UX Designer",
     timeline: "2026 · 4 months",
     stack: ["Figma", "Shadcn"],
-    liveUrl: "https://brawijayamultiusaha.co.id/",
+    liveUrl: "https://brawijayamultiusaha.co.id/id",
     featured: true,
     ink: "#252f4c",
     problem: "Brawijaya Multi Usaha runs a range of business units, but there was no single official face explaining the group and pointing visitors to each unit.",
@@ -87,7 +86,7 @@ export const cases: Case[] = [
     hardPart: "Holding many units with different identities on one page without it reading as a flat list — each unit had to feel like it has a place.",
     outcome: "The group has one official page that explains itself and links visitors to each business unit.",
     logo: "/projects/logo-bmu.webp",
-    selected: "/projects/selected-02.webp",
+    video: "/projects/rec-02.mp4",
     ...media("02"),
   },
   {
@@ -107,7 +106,7 @@ export const cases: Case[] = [
     hardPart: "Giving non-technical staff an admin panel flexible enough to be useful without opening a gap that could break the front page.",
     outcome: "The team updates the site's content themselves through the admin panel, without waiting on a developer.",
     logo: "/projects/logo-core.webp",
-    selected: "/projects/selected-03.webp",
+    video: "/projects/rec-03.mp4",
     ...media("03"),
   },
   {
@@ -127,7 +126,7 @@ export const cases: Case[] = [
     hardPart: "Keeping the exam flow calm and legible in use — question state, time and submission always had to be readable so a taker never second-guesses.",
     outcome: "Tests are taken online and results show immediately in one dashboard.",
     logo: "/projects/logo-core.webp",
-    selected: "/projects/selected-04.webp",
+    video: "/projects/rec-04.mp4",
     ...media("04"),
   },
   {

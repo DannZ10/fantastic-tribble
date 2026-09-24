@@ -109,15 +109,34 @@ export function CaseStack() {
           </div>
 
           <div className="case-card__media">
-            {c.selected && (
-              <img
-                className="case-card__shot"
-                src={c.selected}
-                alt={`${c.title} interface`}
-                loading="lazy"
-                decoding="async"
-              />
-            )}
+            {/* A tilted desktop-browser mockup. Featured cards play the
+                site's own screen recording; the poster holds the frame
+                until it loads. */}
+            <div className="mockup">
+              <span className="mockup__bar" aria-hidden="true" />
+              {c.video ? (
+                <video
+                  className="mockup__screen"
+                  poster={c.preview}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  aria-label={`${c.title} interface recording`}
+                >
+                  <source src={c.video} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  className="mockup__screen"
+                  src={c.preview}
+                  alt={`${c.title} interface`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </div>
           </div>
         </article>
       ))}

@@ -199,10 +199,10 @@
   transform-origin: center center;
   will-change: transform, opacity;
 }
+/* Each arc frame is a little desktop-browser window: a dotted title bar
+   over a 16:9 screen. The whole strip is greyscale until hovered. */
 .arc__bezel {
-  aspect-ratio: 16 / 9;
-  padding: 4px;
-  border-radius: 12px;
+  border-radius: 9px;
   background: #d9d6cc;
   box-shadow: 0 0 0 1px rgba(22, 24, 31, 0.16), 0 18px 34px -20px rgba(22, 24, 31, 0.4);
   overflow: clip;
@@ -213,11 +213,19 @@
   filter: none;
   box-shadow: 0 0 0 1px rgba(22, 24, 31, 0.28), 0 22px 42px -18px rgba(22, 24, 31, 0.55);
 }
+.arc__bar {
+  display: block;
+  height: 14px;
+  background: #c4c0b4;
+  background-image: radial-gradient(circle 2px at 9px 7px, #8f8a7e 98%, transparent),
+    radial-gradient(circle 2px at 17px 7px, #8f8a7e 98%, transparent),
+    radial-gradient(circle 2px at 25px 7px, #8f8a7e 98%, transparent);
+  background-repeat: no-repeat;
+}
 .arc__bezel img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 8px;
   display: block;
 }
 
@@ -667,27 +675,20 @@
   width: calc(100% - var(--gutter) * 2);
   min-height: min(72vh, 620px);
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(24px, 4vw, 64px);
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: clamp(20px, 3.6vw, 56px);
   align-items: center;
-  padding: clamp(20px, 2.6vw, 44px);
-  /* Frosted glass, not the old solid panel: translucent + blur so the
-     page shows through, yet opaque enough to cover the card sliding up
-     beneath it (a fully transparent card leaves both cards' text
-     overlapping mid-transition). This is the glassmorphism read. */
-  background: rgba(239, 237, 230, 0.58);
-  background: color-mix(in srgb, var(--bg) 58%, transparent);
-  backdrop-filter: blur(16px) saturate(1.08);
-  -webkit-backdrop-filter: blur(16px) saturate(1.08);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 22px;
-  box-shadow: 0 30px 70px -42px rgba(22, 24, 31, 0.42);
+  padding: clamp(26px, 3.4vw, 52px);
+  /* Solid panel — back to the original card. The mockup carries the
+     depth now, so the card itself is a plain ground. */
+  background: var(--bg);
+  border: 1px solid var(--hairline);
   will-change: transform, opacity;
 }
 .case-card:last-of-type { margin-bottom: 0; }
 
 .case-card__no { color: var(--case-ink, var(--accent)); margin-bottom: 16px; }
-.case-card__title { font-size: clamp(1.9rem, 4.2vw, 3.3rem); margin-bottom: 16px; }
+.case-card__title { font-size: clamp(2.1rem, 4.8vw, 3.8rem); margin-bottom: 18px; }
 .case-card__blurb {
   font-weight: 300;
   font-size: var(--step-1);
@@ -731,19 +732,39 @@
 }
 
 /* ─── selected mockup (home stack) ─────────────────────────────── */
-/* The card has no panel of its own, so the mockup floats: a soft layered
-   shadow reads as depth, and a hairline light edge gives a glassy lift. */
-.case-card__shot {
-  width: min(100%, 720px);
+/* ─── 3D desktop-browser mockup (home stack + hero share the look) ── */
+/* A browser window tilted in perspective: a title bar with three dots
+   over the screen (a looping recording on the home stack). The tilt is
+   what reads as 3D; the layered shadow drops it off the page. */
+.mockup {
+  width: min(100%, 760px);
+  border-radius: 14px;
+  overflow: clip;
+  background: #1b1d24;
+  box-shadow:
+    0 0 0 1px rgba(22, 24, 31, 0.12),
+    0 18px 34px -18px rgba(22, 24, 31, 0.4),
+    0 60px 100px -44px rgba(22, 24, 31, 0.6);
+  transform: perspective(1600px) rotateY(-9deg) rotateX(2.5deg);
+  transform-origin: center right;
+  transition: transform 500ms var(--ease-out);
+}
+.mockup:hover { transform: perspective(1600px) rotateY(-3deg) rotateX(1deg); }
+.mockup__bar {
+  display: block;
+  height: 28px;
+  background: #2a2d36;
+  background-image: radial-gradient(circle 4px at 18px 14px, #ff5f57 98%, transparent),
+    radial-gradient(circle 4px at 36px 14px, #febc2e 98%, transparent),
+    radial-gradient(circle 4px at 54px 14px, #28c840 98%, transparent);
+  background-repeat: no-repeat;
+}
+.mockup__screen {
+  display: block;
+  width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 18px;
   background: var(--surface-2);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.55) inset,
-    0 0 0 1px rgba(22, 24, 31, 0.08),
-    0 12px 28px -12px rgba(22, 24, 31, 0.32),
-    0 48px 90px -36px rgba(22, 24, 31, 0.55);
 }
 
 /* ─── about ────────────────────────────────────────────────────

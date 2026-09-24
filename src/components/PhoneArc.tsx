@@ -113,6 +113,7 @@ export function PhoneArc() {
       {PHONES.map((src) => (
         <div className="arc__phone" key={src}>
           <div className="arc__bezel">
+            <span className="arc__bar" aria-hidden="true" />
             <img src={src} alt="" loading="lazy" decoding="async" />
           </div>
         </div>

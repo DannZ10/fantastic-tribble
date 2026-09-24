@@ -13,26 +13,23 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const RAW_DIR = path.join(ROOT_DIR, 'raw');
 
 const PROJECTS = [
-  // p01 SDGs UB is internal (VPN) — not captured here.
-  { id: 'p02', name: 'p02-brawijaya-multi-usaha', title: 'Brawijaya Multi Usaha', url: 'https://brawijayamultiusaha.co.id/' },
-  { id: 'p03', name: 'p03-brawijaya-core', title: 'Brawijaya Core', url: 'https://www.brawijayacore.com/' },
-  { id: 'p04', name: 'p04-smart-test', title: 'Smart Test by Brawijaya Core', url: 'https://test.brawijayacore.com/',
-    subUrls: [{ name: 'login', url: 'https://test.brawijayacore.com/login' }] },
-  { id: 'p05', name: 'p05-brawijaya-catering', title: 'Brawijaya Catering', url: 'https://stg-brawijayacatering.vercel.app/' },
-  { id: 'p06', name: 'p06-brawijaya-tour-and-travel', title: 'Brawijaya Tour and Travel', url: 'https://www.brawijayatourandtravel.com/' },
-  { id: 'p07', name: 'p07-depo-agro', title: 'Depo Agro', url: 'https://www.depoagro.id/' },
-  { id: 'p08', name: 'p08-assets-bmu', title: 'Assets BMU', url: 'https://stg-assetsbmu.vercel.app/' },
+  // Order matches the Work page (1-14). Authenticated views (SDGs
+  // /super-admin, Smart Test /user) are NOT captured: this launches a
+  // fresh headless session with no login, so only public pages render.
+  { id: 'p01', name: 'p01-sdgs', title: 'SDGs Universitas Brawijaya', url: 'https://silaras.sdgs.ub.ac.id/' },
+  { id: 'p02', name: 'p02-brawijaya-multi-usaha', title: 'Brawijaya Multi Usaha', url: 'https://brawijayamultiusaha.co.id/id' },
+  { id: 'p03', name: 'p03-brawijaya-core', title: 'Brawijaya Core', url: 'https://brawijayacore.com/' },
+  { id: 'p04', name: 'p04-smart-test', title: 'Smart Test by Brawijaya Core', url: 'https://test.brawijayacore.com/' },
+  { id: 'p05', name: 'p05-brawijaya-catering', title: 'Brawijaya Catering', url: 'http://localhost:3001/' },
+  { id: 'p06', name: 'p06-brawijaya-tour-and-travel', title: 'Brawijaya Tour and Travel', url: 'https://brawijayatourandtravel.com/' },
+  { id: 'p07', name: 'p07-depo-agro', title: 'Depo Agro', url: 'https://depoagro.id/' },
+  { id: 'p08', name: 'p08-assets-bmu', title: 'Assets BMU', url: 'http://localhost:3000/' },
   { id: 'p09', name: 'p09-feedback-bmu', title: 'Feedback BMU', url: 'https://feedback.brawijayamultiusaha.co.id/' },
   { id: 'p10', name: 'p10-due-diligence-bmu', title: 'Due Diligence Form BMU', url: 'https://legal.brawijayamultiusaha.co.id/' },
   { id: 'p11', name: 'p11-coe-cbsa', title: 'CoE CBSA', url: 'https://stg-coecbsa.vercel.app/' },
   { id: 'p12', name: 'p12-kembara', title: 'Kembara.id', url: 'https://stg-kembara.vercel.app/' },
-  { id: 'p13', name: 'p13-saku-mini-wallet', title: 'Saku Mini Wallet by Kembara.id', url: 'https://stg-saku.vercel.app/',
-    subUrls: [{ name: 'login', url: 'https://stg-saku.vercel.app/login' }] },
-  { id: 'p14', name: 'p14-dibiedu-lms', title: 'DibiEdu LMS', url: 'https://dibiedu-lms.vercel.app/',
-    subUrls: [
-      { name: 'courses', url: 'https://dibiedu-lms.vercel.app/courses' },
-      { name: 'login', url: 'https://dibiedu-lms.vercel.app/login' },
-    ] },
+  { id: 'p13', name: 'p13-saku-mini-wallet', title: 'Saku Mini Wallet', url: 'https://stg-saku.vercel.app/' },
+  { id: 'p14', name: 'p14-dibiedu-lms', title: 'DibiEdu LMS', url: 'https://dibiedu-lms.vercel.app/' },
 ];
 
 // Helper to convert webm to mp4 via ffmpeg
@@ -181,124 +178,42 @@ async function captureProject(browser, proj) {
   await waitForProtectionChallenge(desktopPage);
   await desktopPage.waitForTimeout(4500);
 
-  // Take Desktop 01 (Hero / Top section)
-  const desktop01Path = path.join(projDir, `${proj.id}-desktop-01.png`);
-  const ok01 = await safeScreenshot(desktopPage, desktop01Path, 25000);
+  // Four desktop views at increasing scroll depth. The first doubles as
+  // the hover preview. The glide between them is what the video records.
+  const shotAt = async (frac, idx) => {
+    await desktopPage.evaluate((f) => {
+      const h = document.body.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: Math.max(0, h * f), behavior: 'instant' });
+    }, frac).catch(() => {});
+    await desktopPage.waitForTimeout(1400);
+    const out = path.join(projDir, `${proj.id}-desktop-${String(idx).padStart(2, '0')}.png`);
+    await safeScreenshot(desktopPage, out, 22000);
+    return out;
+  };
 
-  // Preview is also the hero desktop view
-  if (ok01 && fs.existsSync(desktop01Path)) {
-    const previewPath = path.join(projDir, `${proj.id}-preview.png`);
-    fs.copyFileSync(desktop01Path, previewPath);
-    console.log(`Saved ${path.basename(previewPath)}`);
+  const first = await shotAt(0, 1);
+  if (fs.existsSync(first)) {
+    fs.copyFileSync(first, path.join(projDir, `${proj.id}-preview.png`));
+    console.log(`Saved ${proj.id}-preview.png`);
   }
-
-  // Smooth scroll down for video recording
   console.log(`[${proj.id}] Recording desktop scroll interaction...`);
-  await desktopPage.waitForTimeout(1000);
-  await smoothScroll(desktopPage, 4000);
-  await desktopPage.waitForTimeout(1200);
+  await smoothScroll(desktopPage, 3800);
+  await shotAt(0.33, 2);
+  await shotAt(0.66, 3);
+  await shotAt(0.98, 4);
+  await smoothScrollToTop(desktopPage, 2000);
+  await desktopPage.waitForTimeout(800);
 
-  // Take Desktop 02 (scrolled down / features)
-  const desktop02Path = path.join(projDir, `${proj.id}-desktop-02.png`);
-  await safeScreenshot(desktopPage, desktop02Path, 20000);
-
-  // Smooth scroll back up
-  await smoothScrollToTop(desktopPage, 2500);
-  await desktopPage.waitForTimeout(1000);
-
-  // Sub URLs if any
-  if (proj.subUrls && proj.subUrls.length > 0) {
-    for (let i = 0; i < proj.subUrls.length; i++) {
-      const sub = proj.subUrls[i];
-      try {
-        console.log(`[${proj.id}] Navigating to subUrl [${sub.name}]: ${sub.url}...`);
-        await desktopPage.goto(sub.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-        await waitForProtectionChallenge(desktopPage);
-        await desktopPage.waitForTimeout(2000);
-        const subIndex = String(i + 3).padStart(2, '0');
-        const desktopSubPath = path.join(projDir, `${proj.id}-desktop-${subIndex}.png`);
-        await safeScreenshot(desktopPage, desktopSubPath, 20000);
-      } catch (e) {
-        console.log(`[${proj.id}] Error capturing subUrl ${sub.name}:`, e.message);
-      }
-    }
-  }
-
-  // Close desktop context to finalize video
+  // Close desktop context to finalize the video, then convert to MP4.
   await desktopContext.close();
-
-  // Find the recorded video and convert to MP4
   const desktopVideos = fs.readdirSync(tempVideoDirDesktop).filter(f => f.endsWith('.webm'));
   if (desktopVideos.length > 0) {
-    const rawDesktopVideo = path.join(tempVideoDirDesktop, desktopVideos[0]);
-    const finalDesktopMp4 = path.join(projDir, `${proj.id}-desktop-rec.mp4`);
-    convertWebmToMp4(rawDesktopVideo, finalDesktopMp4);
+    convertWebmToMp4(
+      path.join(tempVideoDirDesktop, desktopVideos[0]),
+      path.join(projDir, `${proj.id}-desktop-rec.mp4`),
+    );
   }
-  try {
-    fs.rmSync(tempVideoDirDesktop, { recursive: true, force: true });
-  } catch (_) {}
-
-  // 2. MOBILE CAPTURE & RECORDING
-  console.log(`[${proj.id}] Starting Mobile session (390x844 @ 2x)...`);
-  const mobileContext = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    deviceScaleFactor: 2,
-    isMobile: true,
-    hasTouch: true,
-    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1',
-    recordVideo: {
-      dir: tempVideoDirMobile,
-      size: { width: 390, height: 844 },
-    },
-    ignoreHTTPSErrors: true,
-  });
-
-  const mobilePage = await mobileContext.newPage();
-  mobilePage.setDefaultTimeout(60000);
-  mobilePage.setDefaultNavigationTimeout(60000);
-
-  try {
-    await mobilePage.goto(proj.url, { waitUntil: 'networkidle', timeout: 35000 }).catch(async () => {
-      await mobilePage.goto(proj.url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    });
-  } catch (err) {
-    console.error(`[${proj.id}] Failed to load mobile page:`, err.message);
-  }
-
-  await waitForProtectionChallenge(mobilePage);
-  await mobilePage.waitForTimeout(4000);
-
-  // Take Mobile 01
-  const mobile01Path = path.join(projDir, `${proj.id}-mobile-01.png`);
-  await safeScreenshot(mobilePage, mobile01Path, 25000);
-
-  // Smooth scroll down for mobile video recording
-  console.log(`[${proj.id}] Recording mobile scroll interaction...`);
-  await mobilePage.waitForTimeout(1000);
-  await smoothScroll(mobilePage, 4500);
-  await mobilePage.waitForTimeout(1200);
-
-  // Take Mobile 02
-  const mobile02Path = path.join(projDir, `${proj.id}-mobile-02.png`);
-  await safeScreenshot(mobilePage, mobile02Path, 20000);
-
-  // Smooth scroll back up
-  await smoothScrollToTop(mobilePage, 2500);
-  await mobilePage.waitForTimeout(1000);
-
-  // Close mobile context to finalize video
-  await mobileContext.close();
-
-  // Find recorded mobile video and convert to MP4
-  const mobileVideos = fs.readdirSync(tempVideoDirMobile).filter(f => f.endsWith('.webm'));
-  if (mobileVideos.length > 0) {
-    const rawMobileVideo = path.join(tempVideoDirMobile, mobileVideos[0]);
-    const finalMobileMp4 = path.join(projDir, `${proj.id}-mobile-rec.mp4`);
-    convertWebmToMp4(rawMobileVideo, finalMobileMp4);
-  }
-  try {
-    fs.rmSync(tempVideoDirMobile, { recursive: true, force: true });
-  } catch (_) {}
+  try { fs.rmSync(tempVideoDirDesktop, { recursive: true, force: true }); } catch (_) {}
 
   // Also copy primary files to public/raw root for standard pipeline convenience
   const createdFiles = fs.readdirSync(projDir).filter(f => !f.startsWith('temp_'));
